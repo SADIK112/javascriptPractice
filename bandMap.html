@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+        body {
+            max-width: 100vh;
+            max-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background: rgb(173, 42, 70);
+        }
+
+        ul {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 200px;
+            height: auto;
+            background: #fff;  
+            box-shadow: 2px 4px 5px #0003;
+        }
+
+        ul li {
+            list-style-type: none;
+            padding: 5px 0px;
+            color: #000;
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            font-size: 18px;
+            border-bottom: 1px solid #ddd;
+        }
+    </style>
+
+</head>
+
+<body>
+    <ul id="bands"></ul>
+
+    <script>
+        const bands = ['The Plot in You', 'The Devil Wears Prada', 'Pierce the Veil','Norma Jean','The Bled','Say Anything',
+        'The Midway State','We Came as Romans','Counterparts','Oh, Sleeper','A Skylit Drive','Anywhere But Here','An Old Dog'
+        ];
+
+        function strip(bandName){
+           return bandName.replace(/^(an |the |a)/i, '').trim();
+        }
+
+        const sortedBands = bands.sort((a , b) => {
+            return strip(a) > strip(b) ? 1 : -1;
+        });
+
+        document.querySelector('#bands').innerHTML = sortedBands.map(band => `<li>${band}</li>`).join('');
+
+        console.log(sortedBands);
+    </script>
+
+</body>
+
+</html>

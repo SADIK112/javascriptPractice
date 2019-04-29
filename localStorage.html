@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Local Storage</title>
+    <style>
+        
+    html {
+      box-sizing: border-box;
+      background: rgb(143, 23, 73);
+      min-height:100vh;
+      display:flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      font-family: Futura,"Trebuchet MS",Arial,sans-serif
+    }
+    *, *:before, *:after {box-sizing: inherit; }
+    
+    .wrapper {
+      padding: 20px;
+      max-width: 350px;
+      background: rgba(255,255,255,0.95);
+      box-shadow: 0 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin: 0;
+      font-weight: 200;
+    }
+
+    .plates {
+      margin: 0;
+      padding: 0;
+      text-align: left;
+      list-style: none;
+    }
+
+    .plates li {
+      border-bottom: 1px solid rgba(0,0,0,0.2);
+      padding: 10px 0;
+      font-weight: 100;
+      display: flex;
+    }
+
+    .plates label {
+      flex:1;
+      cursor: pointer;
+      padding-left: 5px;
+    }
+
+    .plates input {
+      display: block;
+    }
+
+    input:checked + label{
+        display: inline-block;
+        text-decoration: line-through;
+        background: rgb(217, 220, 221);
+    }
+
+    .add-items {
+      margin-top: 20px;
+    }
+
+    .add-items input {
+      padding:10px;
+      outline:0;
+      border:1px solid rgba(0,0,0,0.1);
+    }
+    </style>
+</head>
+
+<body>
+
+    <div class="wrapper">
+        <h2>LOCAL TAPAS</h2>
+        <p></p>
+        <ul class="plates">
+                <li>Loading Tapas...</li>
+        </ul>
+        <form class="add-items">
+            <input type="text" name="item" placeholder="Item Name" required>
+            <input type="submit" value="+ Add Item">
+        </form>
+    </div>
+
+    <script>
+    
+    var addItems = document.querySelector('.add-items');
+    var itemList = document.querySelector('.plates');
+
+    const items = JSON.parse(localStorage.getItem('items')) || [];
+
+    function getItems(e){
+
+        var myText = (this.querySelector('[name=item]')).value;
+
+        var myItems = {
+            myText,
+            done: false
+        };
+
+        items.push(myItems);
+
+        getPlates(items, itemList);
+        localStorage.setItem('items', JSON.stringify(items));
+
+        e.preventDefault();
+        this.reset();
+    }
+
+    function getPlates(plates = [], placeList){
+        placeList.innerHTML = plates.map((plate, i) => {
+            return `
+                <li>
+                    <input type="checkbox" data-index=${i} id="myItem${i}" ${plate.done ? 'checked' : ''}/>
+                    <label for="myItem${i}">${plate.myText}</label>
+                </li>
+            `
+        }).join('');
+    }
+
+    function toggleDone(e){
+        if(!e.target.matches('input')) return;
+        var el = e.target;
+        const index = el.dataset.index;
+        items[index].done = !items[index].done;
+        localStorage.setItem('items', JSON.stringify(items));
+        getPlates(items, itemList);
+
+    }
+
+    addItems.addEventListener('submit', getItems);
+    itemList.addEventListener('click', toggleDone);    
+
+    getPlates(items, itemList);
+
+    </script>
+
+</body>
+
+</html>

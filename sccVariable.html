@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <style>
+    
+        :root{
+            --base: green;
+            --spacing: 10px;
+            --blur: 10px;
+        }
+
+        .h1{
+            color: var(--base);        
+        }
+    
+        img{
+            padding: var(--spacing);
+            background: var(--base);
+            filter: blur(var(--blur));
+        }
+
+    </style>
+
+</head>
+<body>
+    
+    <h2>Update CSS Variables With <span class="h1">JS</span></h2>
+
+    <div class="controls">
+        
+        <label for="spacing">Spacing: </label>
+        <input type="range" name="spacing" min="10" max="200" value="10" data-sizing="px" />
+
+        <label for="blur">Blur: </label>
+        <input type="range" name="blur" min="0" max="25" value="10" data-sizing="px" />
+        
+        <label for="base">Base Color: </label>
+        <input type="color" name="base" value="red" />
+
+    </div>
+    <br>
+    <img src="1.jpg" alt="fashion" width="610px" height="400px" />
+
+
+    <script>
+    
+        var inputs = document.querySelectorAll('.controls input');
+
+        console.log(inputs);
+
+        function handleEvent(){
+            const suffix = this.dataset.sizing || '';
+            document.documentElement.style.setProperty(`--${this.name}`, this.value + suffix);
+        }
+
+        inputs.forEach(input => input.addEventListener('change', handleEvent));
+        inputs.forEach(input => input.addEventListener('mousemove', handleEvent));
+    
+    </script>
+
+</body>
+</html>
